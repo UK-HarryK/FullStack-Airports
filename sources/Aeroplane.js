@@ -1,8 +1,8 @@
 module.exports = class Aeroplane{
-    static dbConnection = require("better-sqlite3")("./sources/airports.db")
+    static dbConnection = require("better-sqlite3")("../server/airports.db")
     static selectAll = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes")
     static dbInsert = Aeroplane.dbConnection.prepare("INSERT OR IGNORE INTO aeroplanes (serialNum, model, flightRef, locationID) VALUES (?, ?, ?, ?);")
-    static dbDelete = Aeroplane.dbConnection.prepare("DELETE FROM aeroplanes WHERE id = ?;")
+    static dbDelete = Aeroplane.dbConnection.prepare("DELETE FROM aeroplanes WHERE rowid = ?;")
     static dbUpdateLocation = Aeroplane.dbConnection.prepare("UPDATE aeroplanes SET locationID = ? WHERE serialNum = ?;")
     static all = new Map()
     static reqOne = (id)=>{return Aeroplane.all.get(id)}
@@ -12,7 +12,7 @@ module.exports = class Aeroplane{
         this.flightRef = flightRef
         Aeroplane.dbInsert.run(this.serialNum, this.model, this.flightRef, this.locationID)
         this.locationID = locationID
-        this.dbID = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes WHERE serialNum = ?;").run(this.serialNum).id
+        this.dbID = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes WHERE serialNum = ?;").run(this.serialNum).rowid
         this.passengers = new Set()
         Aeroplane.all.set(this.dbID, this)
     }

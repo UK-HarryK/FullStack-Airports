@@ -1,10 +1,10 @@
 const Aeroplane = require("./Aeroplane")
 const Passenger = require("./Passenger")
 module.exports = class Airport{
-    static dbConnection = require("better-sqlite3")("./sources/airports.db")
+    static dbConnection = require("better-sqlite3")("../server/airports.db")
     static selectAll = Airport.dbConnection.prepare("SELECT * FROM airports")
     static dbInsert = Airport.dbConnection.prepare("INSERT OR IGNORE INTO airports (code, name, location) VALUES (?, ?, ?);")
-    static dbDelete = Airport.dbConnection.prepare("DELETE FROM airports WHERE id = ?;")
+    static dbDelete = Airport.dbConnection.prepare("DELETE FROM airports WHERE rowid = ?;")
     static all = new Map()
     static reqOne = (id)=>{return Airport.all.get[id]}
     static bootUp = ()=>{                                                       //This function is weird. I think it will work but i don't like it, feels wrong and slow 
@@ -41,7 +41,7 @@ module.exports = class Airport{
         this.name = name
         this.location = location
         Airport.dbInsert.run(this.code, this.name, this.location)
-        this.dbID = Airport.dbConnection.prepare("SELECT id FROM airports WHERE code = ?;").get(this.code).id
+        this.dbID = Airport.dbConnection.prepare("SELECT rowid FROM airports WHERE code = ?;").get(this.code).rowid
         this.aeroplanes = new Set()
         this.checkedInFlyers = new Map()
         Airport.all.set(this.dbID, this)

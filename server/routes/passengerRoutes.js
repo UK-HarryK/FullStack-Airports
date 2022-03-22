@@ -4,14 +4,14 @@ const Passenger = require("../../sources/Passenger")
 const Aeroplane = require("../../sources/Aeroplane")
 const Airport = require("../../sources/Airport")
 
-router.get("/flyers", (req, res)=>{
+router.get("/", (req, res)=>{
     res.send(Passenger.all)
 })
-router.get("/flyers:id", (req, res)=>{
+router.get("/:id", (req, res)=>{
     let id = req.params.id
     res.send(Passenger.reqOne(id))
 })
-router.post("/flyers:id/board", async (req, res)=>{
+router.post("/:id/board", async (req, res)=>{
     let id = req.params.id
     let { airportID, aeroplaneID } = req.body
     let passengerObject = Passenger.all.get(id)
