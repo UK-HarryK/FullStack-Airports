@@ -20,7 +20,7 @@ router.delete("/", (req, res)=>{
         res.sendStatus(404)
     }
 })
-router.post("/:id/land", async (req, res)=>{
+router.patch("/:id/land", async (req, res)=>{
     let id = req.params.id
     let { landingLocationID } = req.body
     let airportObject = Airport.all.get(landingLocationID)
@@ -28,14 +28,14 @@ router.post("/:id/land", async (req, res)=>{
     await aeroplaneObject.land(airportObject.acceptPlane.bind(airportObject))
     res.sendStatus(201)
 })
-router.post("/:id/takeoff", async (req, res)=>{
+router.patch("/:id/takeoff", async (req, res)=>{
     let id = req.params.id
     let aeroplaneObject = Aeroplane.all.get(id)
     let airportObject = Airport.all.get(aeroplaneObject.locationID)
     await aeroplaneObject.takeoff(airportObject.acceptTakeoff.bind(airportObject))
     res.sendStatus(201)
 })
-router.post("/:id/disembark", async (req, res)=>{
+router.patch("/:id/disembark", async (req, res)=>{
     let id = req.params.id
     let aeroplaneObject = Aeroplane.all.get(id)
     let airportObject = Airport.all.get(aeroplaneObject.locationID)

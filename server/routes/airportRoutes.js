@@ -30,14 +30,14 @@ router.delete("/", (req, res)=>{
         res.sendStatus(404)
     }
 })
-router.post("/:id/checkIn", async (req, res)=>{
+router.patch("/:id/checkIn", async (req, res)=>{
     let id = req.params.id
     let { passportNum, familyName, givenName, ticketRef } = req.body
     let aiportObject = Airport.all.get(id)
     await aiportObject.checkIn(passportNum, familyName, givenName, ticketRef)
     res.sendStatus(201)
 })
-router.post("/:id/registerPlane", async (req, res)=>{
+router.patch("/:id/registerPlane", async (req, res)=>{
     let id = req.params.id
     let { serialNum, model, flightRef } = req.body
     let aiportObject = Airport.all.get(id)

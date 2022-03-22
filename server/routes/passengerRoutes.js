@@ -11,7 +11,7 @@ router.get("/:id", (req, res)=>{
     let id = req.params.id
     res.send(Passenger.reqOne(id))
 })
-router.post("/:id/board", async (req, res)=>{
+router.patch("/:id/board", async (req, res)=>{
     let id = req.params.id
     let { airportID, aeroplaneID } = req.body
     let passengerObject = Passenger.all.get(id)
