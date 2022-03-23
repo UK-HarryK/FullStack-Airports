@@ -2,11 +2,10 @@ const Aeroplane = require("./Aeroplane")
 const Passenger = require("./Passenger")
 module.exports = class Airport{
     static dbConnection = require("better-sqlite3")("../server/airports.db")
-    static selectAll = Airport.dbConnection.prepare("SELECT * FROM airports")
+    static selectAll = Airport.dbConnection.prepare("SELECT * FROM airports;")
     static dbInsert = Airport.dbConnection.prepare("INSERT OR IGNORE INTO airports (code, name, location) VALUES (?, ?, ?);")
     static dbDelete = Airport.dbConnection.prepare("DELETE FROM airports WHERE rowid = ?;")
     static all = new Map()
-    static reqOne = (id)=>{return Airport.all.get[id]}
     static bootUp = ()=>{                                                       //This function is weird. I think it will work but i don't like it, feels wrong and slow 
         let allPorts = Airport.selectAll.all()
         let allPlanes = Aeroplane.selectAll.all()
@@ -45,6 +44,7 @@ module.exports = class Airport{
         this.aeroplanes = new Set()
         this.checkedInFlyers = new Map()
         Airport.all.set(this.dbID, this)
+        console.log(Airport.all)
     }
     async acceptPlane(aeroplane){
         try{        

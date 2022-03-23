@@ -1,6 +1,6 @@
 module.exports = class Aeroplane{
     static dbConnection = require("better-sqlite3")("../server/airports.db")
-    static selectAll = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes")
+    static selectAll = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes;")
     static dbInsert = Aeroplane.dbConnection.prepare("INSERT OR IGNORE INTO aeroplanes (serialNum, model, flightRef, locationID) VALUES (?, ?, ?, ?);")
     static dbDelete = Aeroplane.dbConnection.prepare("DELETE FROM aeroplanes WHERE rowid = ?;")
     static dbUpdateLocation = Aeroplane.dbConnection.prepare("UPDATE aeroplanes SET locationID = ? WHERE serialNum = ?;")

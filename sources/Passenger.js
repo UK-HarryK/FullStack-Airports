@@ -1,7 +1,7 @@
 const Person = require("./Person")
 module.exports = class Passenger extends Person{
     static dbConnection = require("better-sqlite3")("../server/airports.db")
-    static selectAll = Passenger.dbConnection.prepare("SELECT * FROM passengers")
+    static selectAll = Passenger.dbConnection.prepare("SELECT * FROM passengers;")
     static dbInsert = Passenger.dbConnection.prepare("INSERT OR IGNORE INTO passengers (passportNum, familyName, givenName, ticketRef, locationID) VALUES (?, ?, ?, ?, ?);")
     static dbDelete = Passenger.dbConnection.prepare("DELETE FROM passengers WHERE passportNum = ?;")
     static dbUpdateLocation = Passenger.dbConnection.prepare("UPDATE passengers SET locationID = ? WHERE passportNum = ?;")
