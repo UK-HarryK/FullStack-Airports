@@ -1,20 +1,28 @@
 const express = require("express")
 const router = express.Router()
 const Airport = require("../../sources/Airport")
-router.get("/", async (req, res)=>{
-    let iteratorObject = Airport.all.values()
+router.get("/", (req, res)=>{
+    let iteratorObject = Airport.all.values() 
     let returnArr = []
+    let id = req.query.id
+    console.log(id)
     for(let x of iteratorObject){
         returnArr.push(x)
     }
-    res.send(returnArr)
+    if(id){
+        let id = id - 1
+        let value = returnArr[id]
+        res.send(value)
+    }else{
+        res.send(returnArr)
+    }
 })
 router.post("/", async (req, res)=>{
     let {code, name, location} = req.body
     let plane = new Airport(code, name, location)
     res.status(201).send(plane)
 })
-router.get("/:id", async (req, res)=>{
+router.get("/:id", async (req, res)=>{ 
     let id = parseInt(req.params.id)
     let result = Airport.all.get(id)
     if(result){
