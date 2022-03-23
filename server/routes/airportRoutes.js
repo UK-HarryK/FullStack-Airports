@@ -15,7 +15,7 @@ router.post("/", async (req, res)=>{
     res.status(201).send(plane)
 })
 router.get("/:id", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let result = Airport.all.get(id)
     if(result){
         res.send(result)
@@ -24,7 +24,7 @@ router.get("/:id", async (req, res)=>{
         res.sendStatus(404)
     }        
 })
-router.delete("/?id", async (req, res)=>{
+router.delete("/:id", async (req, res)=>{
     let id = parseInt(req.query.id)
     let result = Airport.reqOne(id)
     if(result){
@@ -36,14 +36,14 @@ router.delete("/?id", async (req, res)=>{
         res.sendStatus(404)
     }
 })
-router.patch("/checkIn/?id", async (req, res)=>{
+router.patch("/:id/checkIn", async (req, res)=>{
     let id = parseInt(req.query.id)
     let { passportNum, familyName, givenName, ticketRef } = req.body
     let aiportObject = Airport.all.get(id)
     await aiportObject.checkIn(passportNum, familyName, givenName, ticketRef)
     res.sendStatus(201)
 })
-router.patch("/registerPlane/?id", async (req, res)=>{
+router.patch("/:id/registerPlane", async (req, res)=>{
     let id = parseInt(req.query.id)
     let { serialNum, model, flightRef } = req.body
     let aiportObject = Airport.all.get(id)

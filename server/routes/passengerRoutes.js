@@ -21,7 +21,7 @@ router.get("/:id", async (req, res)=>{
         res.sendStatus(404)
     }
 })
-router.patch("/board/:id", async (req, res)=>{
+router.patch("/:id/board", async (req, res)=>{
     let id = parseInt(req.query.id)
     let { airportID, aeroplaneID } = req.body
     let passengerObject = Passenger.all.get(id)
