@@ -1,10 +1,19 @@
 const express = require("express")
 const router = express.Router()
 const Airport = require("../../sources/Airport")
+function helper(obj){
+    for(let key in obj){
+        if(obj[key] instanceof Map){
+            obj[key] = Object.fromEntries(obj[key])
+        }
+    }
+    return obj
+}
 router.get("/", async (req, res)=>{
     let iteratorObject = Airport.all.values()
     let returnArr = []
     for(let x of iteratorObject){
+        x = helper(x)
         returnArr.push(x)
     }
     res.send(returnArr)
@@ -18,7 +27,8 @@ router.get("/:id", async (req, res)=>{
     let id = parseInt(req.params.id)
     let result = Airport.all.get(id)
     if(result){
-        res.send(result)
+        convRes = helper(result)
+        res.send(convRes)
     }
     else{
         res.sendStatus(404)
@@ -36,18 +46,18 @@ router.delete("/:id", async (req, res)=>{
         res.sendStatus(404)
     }
 })
-router.patch("/:id/checkIn", async (req, res)=>{
-    let id = parseInt(req.query.id)
+router.post("/:id/checkIn", async (req, res)=>{
+    let id = parseInt(req.params.id)
     let { passportNum, familyName, givenName, ticketRef } = req.body
-    let aiportObject = Airport.all.get(id)
-    await aiportObject.checkIn(passportNum, familyName, givenName, ticketRef)
+    let airportObject = Airport.all.get(id)
+    await airportObject.checkIn(passportNum, familyName, givenName, ticketRef)
     res.sendStatus(201)
 })
-router.patch("/:id/registerPlane", async (req, res)=>{
-    let id = parseInt(req.query.id)
+router.post("/:id/registerPlane", async (req, res)=>{
+    let id = parseInt(req.params.id)
     let { serialNum, model, flightRef } = req.body
-    let aiportObject = Airport.all.get(id)
-    await aiportObject.addNewPlane(serialNum, model, flightRef)
+    let airportObject = Airport.all.get(id)
+    await airportObject.addNewPlane(serialNum, model, flightRef)
     res.sendStatus(201)
 })
 module.exports = router

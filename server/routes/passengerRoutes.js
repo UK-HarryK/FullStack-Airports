@@ -13,7 +13,7 @@ router.get("/", async (req, res)=>{
     res.send(returnArr)
 })
 router.get("/:id", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let result = Passenger.all.get(id)
     if(result){
         res.send(result)
@@ -22,7 +22,7 @@ router.get("/:id", async (req, res)=>{
     }
 })
 router.patch("/:id/board", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let { airportID, aeroplaneID } = req.body
     let passengerObject = Passenger.all.get(id)
     let aeroplaneObject = Aeroplane.all.get(aeroplaneID)

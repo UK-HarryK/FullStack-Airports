@@ -41,10 +41,10 @@ module.exports = class Airport{
         this.location = location
         Airport.dbInsert.run(this.code, this.name, this.location)
         this.dbID = Airport.dbConnection.prepare("SELECT rowid FROM airports WHERE code = ?;").get(this.code).rowid
-        this.aeroplanes = new Set()
+        this.aeroplanes = new Map()
         this.checkedInFlyers = new Map()
         Airport.all.set(this.dbID, this)
-        console.log(Airport.all)
+        console.log(this)
     }
     async acceptPlane(aeroplane){
         try{        
@@ -104,7 +104,8 @@ module.exports = class Airport{
     async addNewPlane(serialNum, model, flightRef){
         try{
             let returnPlane = new Aeroplane(serialNum, model, flightRef, this.dbID)
-            this.aeroplanes.add(returnPlane)
+            this.aeroplanes.set(serialNum, returnPlane)
+            console.log(this)
             return returnPlane    
         }
         catch(error){

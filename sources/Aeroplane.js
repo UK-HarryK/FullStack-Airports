@@ -10,11 +10,12 @@ module.exports = class Aeroplane{
         this.serialNum = serialNum
         this.model = model
         this.flightRef = flightRef
-        Aeroplane.dbInsert.run(this.serialNum, this.model, this.flightRef, this.locationID)
         this.locationID = locationID
-        this.dbID = Aeroplane.dbConnection.prepare("SELECT * FROM aeroplanes WHERE serialNum = ?;").run(this.serialNum).rowid
-        this.passengers = new Set()
+        Aeroplane.dbInsert.run(this.serialNum, this.model, this.flightRef, this.locationID)
+        this.dbID = Aeroplane.dbConnection.prepare("SELECT rowid FROM aeroplanes WHERE serialNum = ?;").get(this.serialNum).rowid
+        this.passengers = new Map()
         Aeroplane.all.set(this.dbID, this)
+        console.log(this)
     }
     async land(portAcceptLandCB){
         try{        
@@ -51,7 +52,7 @@ module.exports = class Aeroplane{
     async disembarkPassengers(portDisembarkCB){
         try{
             await portDisembarkCB(this.passengers)
-            this.passengers = new Set()
+            this.passengers = new Map()
             return true
         }
         catch(error){

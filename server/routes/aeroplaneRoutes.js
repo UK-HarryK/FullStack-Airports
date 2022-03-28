@@ -12,13 +12,8 @@ router.get("/", async (req, res)=>{
     res.send(returnArr)
 })
 router.get("/:id", async (req, res)=>{ //this is returning the array from just standard get, I've done something wrong here
-    let id = Number(req.query.id)
-    //let result = Aeroplane.all.get(id)
-    let itrObj = Aeroplane.all.values()
-    for(let x of itrObj){
-        arr.push(x)
-    }
-    let result = arr[id]
+    let id = Number(req.params.id)
+    let result = Aeroplane.all.get(id)
     if(result){
         res.send(result)
     }else{
@@ -27,7 +22,7 @@ router.get("/:id", async (req, res)=>{ //this is returning the array from just s
 
 })
 router.delete("/", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let result = Aeroplane.reqOne(id)
     if(result){
         Aeroplane.all.delete(id)
@@ -38,7 +33,7 @@ router.delete("/", async (req, res)=>{
     }
 })
 router.patch("/:id/land", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let { landingLocationID } = req.body
     let airportObject = Airport.all.get(landingLocationID)
     let aeroplaneObject = Aeroplane.all.get(id)
@@ -46,14 +41,14 @@ router.patch("/:id/land", async (req, res)=>{
     res.sendStatus(201)
 })
 router.patch("/:id/takeoff", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let aeroplaneObject = Aeroplane.all.get(id)
     let airportObject = Airport.all.get(aeroplaneObject.locationID)
     await aeroplaneObject.takeoff(airportObject.acceptTakeoff.bind(airportObject))
     res.sendStatus(201)
 })
 router.patch("/:id/disembark", async (req, res)=>{
-    let id = parseInt(req.query.id)
+    let id = parseInt(req.params.id)
     let aeroplaneObject = Aeroplane.all.get(id)
     let airportObject = Airport.all.get(aeroplaneObject.locationID)
     await aeroplaneObject.disembarkPassengers(airportObject.acceptPassengers.bind(airportObject))

@@ -12,7 +12,7 @@ module.exports = class Passenger extends Person{
         this.ticketCode = ticketCode
         this.locationID = locationID
         Passenger.dbInsert.run(this.passportNum, this.familyName, this.givenName, this.ticketCode, this.locationID)
-        this.dbID = Passenger.dbConnection.prepare("SELECT * FROM passengers WHERE passportNum = ?;")
+        this.dbID = Passenger.dbConnection.prepare("SELECT * FROM passengers WHERE passportNum = ?;").get(this.passportNum).rowid
         Passenger.all.set(this.dbID, this)
     }
     async board(portBoardCB, planeBoardCB){
